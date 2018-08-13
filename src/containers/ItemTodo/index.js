@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import Input from "../../components/Input";
 import Button from "../../components/Button";
 import { connect } from "react-redux";
-import { save, remove } from "../../actions/pageActions";
+import { saveTodo, removeTodo } from "../../actions/pageActions";
 import PropTypes from "prop-types";
 
 class ItemTodo extends Component {
@@ -16,14 +16,17 @@ class ItemTodo extends Component {
   }
 
   remove = () => {
-    this.props.remove(this.props.itemId, window.localStorage.getItem("token"));
+    this.props.removeTodo(
+      this.props.itemId,
+      window.localStorage.getItem("token")
+    );
   };
 
   save = e => {
     this.setState({
       edit: false
     });
-    this.props.save(
+    this.props.saveTodo(
       this.props.itemId,
       this.state.textInputValue,
       window.localStorage.getItem("token")
@@ -90,5 +93,5 @@ ItemTodo.propTypes = {
 
 export default connect(
   null,
-  { save, remove }
+  { saveTodo, removeTodo }
 )(ItemTodo);

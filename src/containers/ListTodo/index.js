@@ -54,7 +54,6 @@ class ListTodo extends Component {
         </div>
         <ul className="todo-list">
           {this.props.list.map(item => {
-            console.log(item);
             return (
               <ItemTodo key={item._id} itemId={item._id} text={item.text} />
             );

@@ -6,9 +6,15 @@ const initialState = {
 
 export default function list(state = initialState, action) {
   switch (action.type) {
-    case "ADD":
+    case "ADDPENDING":
       return {
         ...state,
+        pending: true
+      };
+    case "ADDFULFILLED":
+      return {
+        ...state,
+        pending: false,
         list: state.list.concat({
           _id: action.payload._id,
           text: action.payload.text,
@@ -16,20 +22,50 @@ export default function list(state = initialState, action) {
           done: action.payload.done
         })
       };
-    case "REMOVE":
+    case "ADDREJECTED":
       return {
         ...state,
+        pending: false,
+        error: true
+      };
+    case "REMOVEPENDING":
+      return {
+        ...state,
+        pending: true
+      };
+    case "REMOVEFULFILLED":
+      return {
+        ...state,
+        pending: false,
         list: state.list.filter(({ _id }) => _id !== action.payload.itemId)
       };
-    case "SAVE":
+    case "REMOVEREJECTED":
       return {
         ...state,
+        pending: false,
+        error: true
+      };
+    case "SAVEPENDING":
+      return {
+        ...state,
+        pending: true
+      };
+    case "SAVEFULFILLED":
+      return {
+        ...state,
+        pending: false,
         list: state.list.map(curr => {
           console.log("curr", curr);
           return curr._id === action.payload.itemId
             ? { ...curr, text: action.payload.text }
             : curr;
         })
+      };
+    case "SAVEREJECTED":
+      return {
+        ...state,
+        pending: false,
+        error: true
       };
     case "SORT_FROM_NEW":
       return {

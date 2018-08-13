@@ -3,7 +3,7 @@ import Input from "../../components/Input";
 import Button from "../../components/Button";
 import { connect } from "react-redux";
 
-import { add, change } from "../../actions/pageActions";
+import { addTodo, change } from "../../actions/pageActions";
 
 class CreateTodo extends Component {
   change = e => {
@@ -12,7 +12,7 @@ class CreateTodo extends Component {
 
   add = () => {
     const token = window.localStorage.getItem("token");
-    this.props.add(this.props.inputValue, token);
+    this.props.addTodo(this.props.inputValue, token);
   };
 
   render() {
@@ -31,5 +31,5 @@ class CreateTodo extends Component {
 
 export default connect(
   ({ inputState: { inputValue } }) => ({ inputValue: inputValue }),
-  { add, change }
+  { addTodo, change }
 )(CreateTodo);

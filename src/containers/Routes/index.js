@@ -38,12 +38,9 @@ class Routes extends Component {
         <div className="name">{"" + this.props.username}</div>
 
         <div className="nav">
-          <Link to="/login">Login</Link>
-          <Link to="/signup">Signup</Link>
-          <Link to="/protected">Protected</Link>
-
           {this.props.isLogin ? (
             <div>
+              <Link to="/protected">Todo App</Link>
               <Link to="/profile">Profile</Link>
               <Button
                 className="remove"
@@ -51,7 +48,12 @@ class Routes extends Component {
                 clickHandler={this.signoutHandler}
               />
             </div>
-          ) : null}
+          ) : (
+            <div>
+              <Link to="/login">Login</Link>
+              <Link to="/signup">Signup</Link>
+            </div>
+          )}
         </div>
 
         <Route exact path="/" component={Start} />
