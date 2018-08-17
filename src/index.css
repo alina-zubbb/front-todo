@@ -76,11 +76,11 @@ input[type="password"] {
   background: blue;
 }
 
-.save {
+.update {
   background: green;
 }
 
-.remove {
+.delete {
   background: red;
 }
 
@@ -91,17 +91,17 @@ input[type="password"] {
 /*  */
 
 /* .input-text,
-.save {
+.update {
   display: none;
 } */
 
 /* .edit .input-text,
-.edit .save {
+.edit .update {
   display: inline-block;
 }
 
 .edit .item-text,
-.edit .remove {
+.edit .delete {
   display: none;
 } */
 
@@ -148,7 +148,7 @@ input[type="password"] {
   text-align: left;
 }
 
-/* signup, login forms */
+/* signUp, login forms */
 .auth-form {
   max-width: 400px;
   margin: auto;

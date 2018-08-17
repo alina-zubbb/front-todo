@@ -3,7 +3,8 @@ import Input from "../../components/Input";
 import Button from "../../components/Button";
 import { connect } from "react-redux";
 
-import { signup } from "../../actions/loginActions";
+import { store } from "../../store/configureStore";
+import { signUpPending } from "../../actions/loginActions";
 
 class Signup extends Component {
   state = {
@@ -29,12 +30,12 @@ class Signup extends Component {
       username: this.state.inputName,
       password: this.state.inputPassword
     };
-    this.props.signup(data);
+    store.dispatch(signUpPending(data));
   };
 
   render() {
     return (
-      <form className="auth-form" id="signup" onSubmit={this.handleSubmit}>
+      <form className="auth-form" id="signUp" onSubmit={this.handleSubmit}>
         <h1>Sign Up</h1>
         <Input
           type="text"
@@ -59,5 +60,5 @@ class Signup extends Component {
 
 export default connect(
   null,
-  { signup }
+  { signUpPending }
 )(Signup);

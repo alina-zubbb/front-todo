@@ -1,10 +1,14 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { fetchJson } from "../../actions/jsonAction";
+
+import { store } from "../../store/configureStore";
+import { getFakePostsPending } from "../../actions/getFakePostsAction";
 import Input from "../../components/Input";
 
-class Page1 extends Component {
+class Posts extends Component {
+  _currentPostIndex = 1;
+
   state = {
     inputValue: "",
     currPost: {}
@@ -50,32 +54,37 @@ class Page1 extends Component {
     });
   };
 
-  showFeed() {
-    let id = 98;
-    setInterval(() => {
-      this.getPost(id);
-      id = id === 100 ? 1 : id + 1;
-    }, 3000);
+  getPostByIndex(index) {
+    this.getPost(index);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this._timer);
   }
 
   render() {
-    if (this.props.jsonState.error) {
+    const { jsonState } = this.props;
+
+    const { currPost } = this.state;
+
+    if (jsonState.error) {
       return <div>error</div>;
     }
-    if (this.props.jsonState.pending) {
+    if (jsonState.pending) {
       return <div>loading</div>;
     }
+
+    const list = this.filteredList();
+
     return (
       <div className="page1">
         <hr />
         <h3>News</h3>
         <div className="feedPosts">
-          <span className="marker">ID</span> {this.state.currPost.id} <br />
-          <span className="marker">USER ID</span> {this.state.currPost.userId}{" "}
-          <br />
-          <span className="marker">TITLE</span> {this.state.currPost.title}{" "}
-          <br />
-          <span className="marker">BODY</span> {this.state.currPost.body} <br />
+          <span className="marker">ID</span> {currPost.id} <br />
+          <span className="marker">USER ID</span> {currPost.userId} <br />
+          <span className="marker">TITLE</span> {currPost.title} <br />
+          <span className="marker">BODY</span> {currPost.body} <br />
         </div>
         <hr />
         <h1>Page 1 content</h1>
@@ -85,25 +94,31 @@ class Page1 extends Component {
           placeholder="Search"
           changeHandler={this.changeSearchValue}
         />
-        <p>Find {this.filteredList().length} items</p>
-        <ul className="posts">
-          {this.filteredList().map(this.listItemMapper)}
-        </ul>
+        <p>Find {list.length} items</p>
+        <ul className="posts">{list.map(this.listItemMapper)}</ul>
       </div>
     );
   }
 
   componentDidMount() {
-    this.props.fetchJson();
-    this.showFeed();
+    store.dispatch(getFakePostsPending());
+
+    this.getPostByIndex(this._currentPostIndex);
+
+    this._timer = setInterval(() => {
+      if (++this._currentPostIndex > 100) {
+        this._currentPostIndex = 1;
+      }
+      this.getPostByIndex(this._currentPostIndex);
+    }, 3000);
   }
 }
 
-Page1.propTypes = {
+Posts.propTypes = {
   jsonState: PropTypes.object
 };
 
 export default connect(
   ({ jsonState }) => ({ jsonState }),
-  { fetchJson }
-)(Page1);
+  { getFakePostsPending }
+)(Posts);

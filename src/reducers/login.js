@@ -9,7 +9,7 @@ const initialState = {
 
 export default function login(state = initialState, action) {
   switch (action.type) {
-    case "LOGIN_PENDING":
+    case "LOGINPENDING":
       return {
         ...state,
         pending: true,
@@ -17,7 +17,7 @@ export default function login(state = initialState, action) {
         username: null,
         authenticated: false
       };
-    case "LOGIN_FULFILLED":
+    case "LOGINFULFILLED":
       return {
         ...state,
         pending: false,
@@ -27,7 +27,7 @@ export default function login(state = initialState, action) {
         authenticated: true,
         imageLink: action.payload.imageLink
       };
-    case "LOGIN_REJECTED":
+    case "LOGINREJECTED":
       return {
         ...state,
         pending: false,
@@ -35,7 +35,7 @@ export default function login(state = initialState, action) {
         username: null,
         authenticated: false
       };
-    case "SIGNUP_PENDING":
+    case "SIGNUPPENDING":
       return {
         ...state,
         pending: true,
@@ -43,7 +43,7 @@ export default function login(state = initialState, action) {
         username: null,
         authenticated: false
       };
-    case "SIGNUP_FULFILLED":
+    case "SIGNUPFULFILLED":
       return {
         ...state,
         pending: false,
@@ -51,7 +51,7 @@ export default function login(state = initialState, action) {
         username: action.payload.username,
         authenticated: false
       };
-    case "SIGNUP_REJECTED":
+    case "SIGNUPREJECTED":
       return {
         ...state,
         pending: false,
@@ -59,7 +59,7 @@ export default function login(state = initialState, action) {
         username: null,
         authenticated: false
       };
-    case "GETUSERDATA_PENDING":
+    case "GETUSERDATAPENDING":
       return {
         ...state,
         pending: true,
@@ -67,7 +67,7 @@ export default function login(state = initialState, action) {
         username: null,
         authenticated: false
       };
-    case "GETUSERDATA_FULFILLED":
+    case "GETUSERDATAFULFILLED":
       return {
         ...state,
         pending: false,
@@ -77,7 +77,7 @@ export default function login(state = initialState, action) {
         userId: action.payload.userId,
         imageLink: action.payload.imageLink
       };
-    case "GETUSERDATA_REJECTED":
+    case "GETUSERDATAREJECTED":
       return {
         ...state,
         pending: false,
@@ -96,18 +96,18 @@ export default function login(state = initialState, action) {
         authenticated: false,
         imageLink: null
       };
-    case "uploadImage_PENDING":
+    case "UPLOADIMAGEPENDING":
       return {
         ...state,
         pending: true
       };
-    case "uploadImage_FULFILLED":
+    case "UPLOADIMAGEFULFILLED":
       return {
         ...state,
         pending: false,
         imageLink: action.payload.imageLink
       };
-    case "uploadImage_REJECTED":
+    case "UPLOADIMAGEREJECTED":
       return {
         ...state,
         pending: false,

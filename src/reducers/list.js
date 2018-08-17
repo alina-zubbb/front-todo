@@ -6,12 +6,34 @@ const initialState = {
 
 export default function list(state = initialState, action) {
   switch (action.type) {
-    case "ADDPENDING":
+    case "GETALLTODOPENDING":
+      return {
+        ...state,
+        ...{
+          pending: true
+        }
+      };
+    case "GETALLTODOFULFILLED":
+      return {
+        ...state,
+        ...{
+          pending: false,
+          list: action.payload.list
+        }
+      };
+    case "GETALLTODOREJECTED":
+      return {
+        ...state,
+        ...{
+          error: true
+        }
+      };
+    case "CREATETODOPENDING":
       return {
         ...state,
         pending: true
       };
-    case "ADDFULFILLED":
+    case "CREATETODOFULFILLED":
       return {
         ...state,
         pending: false,
@@ -22,35 +44,35 @@ export default function list(state = initialState, action) {
           done: action.payload.done
         })
       };
-    case "ADDREJECTED":
+    case "CREATETODOREJECTED":
       return {
         ...state,
         pending: false,
         error: true
       };
-    case "REMOVEPENDING":
+    case "DELETETODOPENDING":
       return {
         ...state,
         pending: true
       };
-    case "REMOVEFULFILLED":
+    case "DELETETODOFULFILLED":
       return {
         ...state,
         pending: false,
         list: state.list.filter(({ _id }) => _id !== action.payload.itemId)
       };
-    case "REMOVEREJECTED":
+    case "DELETETODOREJECTED":
       return {
         ...state,
         pending: false,
         error: true
       };
-    case "SAVEPENDING":
+    case "UPDATETODOPENDING":
       return {
         ...state,
         pending: true
       };
-    case "SAVEFULFILLED":
+    case "UPDATETODOFULFILLED":
       return {
         ...state,
         pending: false,
@@ -61,7 +83,7 @@ export default function list(state = initialState, action) {
             : curr;
         })
       };
-    case "SAVEREJECTED":
+    case "UPDATETODOREJECTED":
       return {
         ...state,
         pending: false,
@@ -97,28 +119,6 @@ export default function list(state = initialState, action) {
             const hourPoint = Date.now() - 5000;
             return id > hourPoint;
           })
-        }
-      };
-    case "GETALLTODO_PENDING":
-      return {
-        ...state,
-        ...{
-          pending: true
-        }
-      };
-    case "GETALLTODO_FULFILLED":
-      return {
-        ...state,
-        ...{
-          pending: false,
-          list: action.payload.list
-        }
-      };
-    case "GETALLTODO_REJECTED":
-      return {
-        ...state,
-        ...{
-          error: true
         }
       };
 

@@ -5,13 +5,7 @@ import { history, store } from "../../store/configureStore";
 
 import "../../index.css";
 
-import { getUserData } from "../../actions/loginActions";
 import Routes from "../Routes";
-
-const token = window.localStorage.getItem("token");
-if (token) {
-  store.dispatch(getUserData(token));
-}
 
 class App extends Component {
   render() {

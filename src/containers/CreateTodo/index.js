@@ -3,7 +3,8 @@ import Input from "../../components/Input";
 import Button from "../../components/Button";
 import { connect } from "react-redux";
 
-import { addTodo, change } from "../../actions/pageActions";
+import { store } from "../../store/configureStore";
+import { createTodoPending, change } from "../../actions/pageActions";
 
 class CreateTodo extends Component {
   change = e => {
@@ -12,7 +13,7 @@ class CreateTodo extends Component {
 
   add = () => {
     const token = window.localStorage.getItem("token");
-    this.props.addTodo(this.props.inputValue, token);
+    store.dispatch(createTodoPending(token, this.props.inputValue));
   };
 
   render() {
@@ -31,5 +32,5 @@ class CreateTodo extends Component {
 
 export default connect(
   ({ inputState: { inputValue } }) => ({ inputValue: inputValue }),
-  { addTodo, change }
+  { createTodoPending, change }
 )(CreateTodo);

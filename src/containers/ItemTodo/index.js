@@ -1,9 +1,14 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import { store } from "../../store/configureStore";
+
 import Input from "../../components/Input";
 import Button from "../../components/Button";
-import { connect } from "react-redux";
-import { saveTodo, removeTodo } from "../../actions/pageActions";
-import PropTypes from "prop-types";
+import {
+  updateTodoPending,
+  deleteTodoPending
+} from "../../actions/pageActions";
 
 class ItemTodo extends Component {
   constructor(props) {
@@ -15,21 +20,25 @@ class ItemTodo extends Component {
     };
   }
 
-  remove = () => {
-    this.props.removeTodo(
-      this.props.itemId,
-      window.localStorage.getItem("token")
+  delete = () => {
+    if (process.env.NODE_ENV === "development") {
+      console.log("delete");
+    }
+    store.dispatch(
+      deleteTodoPending(window.localStorage.getItem("token"), this.props.itemId)
     );
   };
 
-  save = e => {
+  update = e => {
     this.setState({
       edit: false
     });
-    this.props.saveTodo(
-      this.props.itemId,
-      this.state.textInputValue,
-      window.localStorage.getItem("token")
+    store.dispatch(
+      updateTodoPending(
+        window.localStorage.getItem("token"),
+        this.props.itemId,
+        this.state.textInputValue
+      )
     );
   };
 
@@ -66,7 +75,11 @@ class ItemTodo extends Component {
                 className="input-text"
                 type="text"
               />
-              <Button className="save" text="save" clickHandler={this.save} />
+              <Button
+                className="update"
+                text="update"
+                clickHandler={this.update}
+              />
             </span>
           ) : (
             <span>
@@ -74,9 +87,9 @@ class ItemTodo extends Component {
                 {this.props.text}
               </span>
               <Button
-                className="remove"
-                text="remove"
-                clickHandler={this.remove}
+                className="delete"
+                text="delete"
+                clickHandler={this.delete}
               />
             </span>
           )}
@@ -93,5 +106,5 @@ ItemTodo.propTypes = {
 
 export default connect(
   null,
-  { saveTodo, removeTodo }
+  { updateTodoPending, deleteTodoPending }
 )(ItemTodo);

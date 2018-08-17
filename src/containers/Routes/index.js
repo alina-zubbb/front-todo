@@ -3,14 +3,20 @@ import { Route, Link, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { compose } from "redux";
 
-import { getUserData, signout } from "../../actions/loginActions";
+import { store } from "../../store/configureStore";
+import { getUserDataPending, signout } from "../../actions/loginActions";
 import Button from "../../components/Button";
 import PrivateRoute from "../PrivateRoute";
 import Login from "../Login/";
 import Signup from "../Signup";
 import ToDoApp from "../ToDoApp";
-import Page1 from "../Page1";
+import Posts from "../Posts";
 import Profile from "../Profile";
+
+const token = window.localStorage.getItem("token");
+if (token) {
+  store.dispatch(getUserDataPending(token));
+}
 
 class Routes extends Component {
   state = {
@@ -41,9 +47,10 @@ class Routes extends Component {
           {this.props.isLogin ? (
             <div>
               <Link to="/protected">Todo App</Link>
+              <Link to="/posts">Posts</Link>
               <Link to="/profile">Profile</Link>
               <Button
-                className="remove"
+                className="delete"
                 text="Logout"
                 clickHandler={this.signoutHandler}
               />
@@ -51,15 +58,15 @@ class Routes extends Component {
           ) : (
             <div>
               <Link to="/login">Login</Link>
-              <Link to="/signup">Signup</Link>
+              <Link to="/signUp">Signup</Link>
             </div>
           )}
         </div>
 
         <Route exact path="/" component={Start} />
         <PrivateRoute path="/protected" component={ToDoApp} />
-        <Route path="/signup" component={Signup} />
-        <Route path="/page1" component={Page1} />
+        <Route path="/signUp" component={Signup} />
+        <Route path="/posts" component={Posts} />
         <Route path="/login" component={Login} />
         <Route path="/profile" component={Profile} />
       </div>
@@ -80,6 +87,6 @@ export default compose(
       userId: loginState.userId,
       imageLink: loginState.imageLink
     }),
-    { getUserData, signout }
+    { getUserDataPending, signout }
   )
 )(Routes);

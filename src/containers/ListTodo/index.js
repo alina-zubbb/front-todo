@@ -7,8 +7,10 @@ import {
   sortFromNew,
   sortFromOld,
   sortFromHour,
-  getAllTodo
+  getAllTodoPending
 } from "../../actions/pageActions";
+
+import { store } from "../../store/configureStore";
 
 class ListTodo extends Component {
   state = {
@@ -28,10 +30,12 @@ class ListTodo extends Component {
   };
 
   componentDidMount() {
-    this.props.getAllTodo(this.state.token);
+    // this.props.getAllTodo(this.state.token);
+    store.dispatch(getAllTodoPending(this.state.token));
   }
 
   render() {
+    console.log(this.props.list);
     return (
       <div>
         <div>
@@ -75,5 +79,5 @@ ListTodo.propTypes = {
 
 export default connect(
   ({ listState }) => ({ list: listState.list }),
-  { sortFromNew, sortFromOld, sortFromHour, getAllTodo }
+  { sortFromNew, sortFromOld, sortFromHour, getAllTodoPending }
 )(ListTodo);

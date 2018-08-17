@@ -3,7 +3,8 @@ import Input from "../../components/Input";
 import Button from "../../components/Button";
 import { connect } from "react-redux";
 
-import { uploadImage } from "../../actions/loginActions";
+import { store } from "../../store/configureStore";
+import { uploadImagePending } from "../../actions/loginActions";
 
 class Profile extends Component {
   state = {
@@ -24,17 +25,16 @@ class Profile extends Component {
     }
   };
 
-  handleSubmit = async e => {
+  handleSubmit = e => {
     e.preventDefault();
     if (this.state.fileName) {
       const token = window.localStorage.getItem("token");
       const data = {
-        userId: this.props.userId,
+        token,
         fileName: this.state.fileName,
-        file: this.state.file,
-        token: token
+        file: this.state.file
       };
-      this.props.uploadImage(data);
+      store.dispatch(uploadImagePending(data));
     } else {
       console.log("please, upload image");
     }
@@ -72,5 +72,5 @@ export default connect(
     userId: loginState.userId,
     imageLink: loginState.imageLink
   }),
-  { uploadImage }
+  { uploadImagePending }
 )(Profile);

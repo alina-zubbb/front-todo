@@ -6,21 +6,21 @@ const initialState = {
 
 export default function jsonState(state = initialState, action) {
   switch (action.type) {
-    case "FETCH_PENDING": {
+    case "GETFAKEPOSTSPENDING": {
       return {
         pending: true,
         data: [],
         error: false
       };
     }
-    case "FETCH_FULFILLED": {
+    case "GETFAKEPOSTSFULFILLED": {
       return {
         pending: false,
         data: action.payload.jsonState,
         error: false
       };
     }
-    case "FETCH_REJECTED":
+    case "GETFAKEPOSTSREJECTED":
       return {
         pending: false,
         data: [],

@@ -1,9 +1,10 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
+import { store } from "../../store/configureStore";
 import Input from "../../components/Input";
 import Button from "../../components/Button";
-import { login } from "../../actions/loginActions";
+import { loginPending } from "../../actions/loginActions";
 
 class Login extends Component {
   state = {
@@ -23,13 +24,13 @@ class Login extends Component {
     });
   };
 
-  handleSubmit = async e => {
+  handleSubmit = e => {
     e.preventDefault();
     const data = {
       username: this.state.inputName,
       password: this.state.inputPassword
     };
-    this.props.login(data);
+    store.dispatch(loginPending(data));
   };
 
   render() {
@@ -60,5 +61,5 @@ class Login extends Component {
 
 export default connect(
   null,
-  { login }
+  { loginPending }
 )(Login);

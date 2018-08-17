@@ -2,15 +2,20 @@ import { createStore, applyMiddleware, compose } from "redux";
 import createHistory from "history/createBrowserHistory";
 import thunk from "redux-thunk";
 import axios from "axios";
-
 import { routerMiddleware } from "react-router-redux";
+import createSagaMiddleware from "redux-saga";
+
 import rootReducer from "../reducers/index";
+import { rootSaga } from "../sagas";
 
 export const history = createHistory();
 
+const sagaMiddleware = createSagaMiddleware();
+
 const middlewares = [
   thunk.withExtraArgument({ axios }),
-  routerMiddleware(history)
+  routerMiddleware(history),
+  sagaMiddleware
   // logger
 ];
 
@@ -28,3 +33,5 @@ const composeEnhancers =
     : compose;
 
 export const store = createStore(rootReducer, composeEnhancers(...enhanclers));
+
+sagaMiddleware.run(rootSaga);
