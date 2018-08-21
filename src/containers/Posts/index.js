@@ -1,29 +1,31 @@
+import axios from "axios";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 
-import { store } from "../../store/configureStore";
-import { getFakePostsPending } from "../../actions/getFakePostsAction";
+import {
+  getFakePostsPending,
+  changePostsSearchInput
+} from "../../actions/getFakePostsAction";
 import Input from "../../components/Input";
 
 class Posts extends Component {
   _currentPostIndex = 1;
 
   state = {
-    inputValue: "",
     currPost: {}
   };
 
-  changeSearchValue = e => {
-    this.setState({
-      inputValue: e.target.value
-    });
+  changeSearchValue = () => {
+    this.props.changePostsSearchInput();
   };
 
   filteredList = () => {
-    return this.props.jsonState.data.filter(
-      el => ~el.title.indexOf(this.state.inputValue)
-    );
+    return this.props.jsonState.data.filter(el => {
+      return el.title.indexOf(this.props.jsonState.searchInputValue) < 0
+        ? 0
+        : 1;
+    });
   };
 
   listItemMapper = ({ id, userId, title, body }) => (
@@ -42,13 +44,14 @@ class Posts extends Component {
     </li>
   );
 
-  fetchPost = id =>
-    fetch(`https://jsonplaceholder.typicode.com/posts/${id}`).then(res =>
-      res.json()
-    );
+  queryPost = id =>
+    axios
+      .get(`https://jsonplaceholder.typicode.com/posts/${id}`)
+      .then(res => res.data)
+      .catch(err => console.log(err.message));
 
   getPost = async id => {
-    let post = await this.fetchPost(id);
+    let post = await this.queryPost(id);
     this.setState({
       currPost: post
     });
@@ -62,20 +65,30 @@ class Posts extends Component {
     clearInterval(this._timer);
   }
 
-  render() {
-    const { jsonState } = this.props;
+  componentDidMount() {
+    this.props.getFakePostsPending();
 
+    this.getPostByIndex(this._currentPostIndex);
+
+    this._timer = setInterval(() => {
+      if (++this._currentPostIndex > 100) {
+        this._currentPostIndex = 1;
+      }
+      this.getPostByIndex(this._currentPostIndex);
+    }, 3000);
+  }
+
+  render() {
     const { currPost } = this.state;
 
-    if (jsonState.error) {
+    if (this.props.jsonState.error) {
       return <div>error</div>;
     }
-    if (jsonState.pending) {
+    if (this.props.jsonState.pending) {
       return <div>loading</div>;
     }
 
     const list = this.filteredList();
-
     return (
       <div className="page1">
         <hr />
@@ -92,33 +105,21 @@ class Posts extends Component {
         <Input
           type="text"
           placeholder="Search"
-          changeHandler={this.changeSearchValue}
+          value={this.props.jsonState.searchInputValue}
+          changeHandler={e => this.props.changePostsSearchInput(e.target.value)}
         />
         <p>Find {list.length} items</p>
         <ul className="posts">{list.map(this.listItemMapper)}</ul>
       </div>
     );
   }
-
-  componentDidMount() {
-    store.dispatch(getFakePostsPending());
-
-    this.getPostByIndex(this._currentPostIndex);
-
-    this._timer = setInterval(() => {
-      if (++this._currentPostIndex > 100) {
-        this._currentPostIndex = 1;
-      }
-      this.getPostByIndex(this._currentPostIndex);
-    }, 3000);
-  }
 }
 
 Posts.propTypes = {
-  jsonState: PropTypes.object
+  jsonState: PropTypes.object.isRequired
 };
 
 export default connect(
   ({ jsonState }) => ({ jsonState }),
-  { getFakePostsPending }
+  { getFakePostsPending, changePostsSearchInput }
 )(Posts);

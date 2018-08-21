@@ -16,7 +16,7 @@ function* worker(action) {
     const { data } = yield call(axiosQuery, {
       method: "GET",
       url: "http://localhost:4000/getUserData",
-      token: action.payload.token
+      token: window.localStorage.token
     });
     yield put(getUserDataFulfilled(data));
   } catch (e) {
@@ -26,7 +26,7 @@ function* worker(action) {
 
 // watcher
 function* getUserData() {
-  yield takeLatest("GETUSERDATAPENDING", worker);
+  yield takeLatest("GET_USER_DATA_PENDING", worker);
 }
 
 export default getUserData;

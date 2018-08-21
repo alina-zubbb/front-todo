@@ -13,7 +13,7 @@ function* worker(action) {
     const { data } = yield call(axiosQuery, {
       method: "POST",
       url: "http://localhost:4000/updateTodo",
-      token: action.payload.token,
+      token: window.localStorage.token,
       data: { itemId: action.payload.itemId, text: action.payload.text }
     });
     yield [put(updateTodoFulfilled(data))];
@@ -24,7 +24,7 @@ function* worker(action) {
 
 // watcher
 function* updateTodo() {
-  yield takeLatest("UPDATETODOPENDING", worker);
+  yield takeLatest("UPDATE_TODO_PENDING", worker);
 }
 
 export default updateTodo;

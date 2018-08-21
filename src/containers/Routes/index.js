@@ -3,8 +3,7 @@ import { Route, Link, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { compose } from "redux";
 
-import { store } from "../../store/configureStore";
-import { getUserDataPending, signout } from "../../actions/loginActions";
+import { signout } from "../../actions/loginActions";
 import Button from "../../components/Button";
 import PrivateRoute from "../PrivateRoute";
 import Login from "../Login/";
@@ -13,16 +12,7 @@ import ToDoApp from "../ToDoApp";
 import Posts from "../Posts";
 import Profile from "../Profile";
 
-const token = window.localStorage.getItem("token");
-if (token) {
-  store.dispatch(getUserDataPending(token));
-}
-
 class Routes extends Component {
-  state = {
-    status: false
-  };
-
   signoutHandler = () => {
     localStorage.removeItem("token");
     this.props.signout();
@@ -35,13 +25,16 @@ class Routes extends Component {
 
     return (
       <div className="app">
-        <div className="avatar">
-          <img
-            src={this.props.imageLink || "http://place-hold.it/100"}
-            alt=""
-          />
-        </div>
-        <div className="name">{"" + this.props.username}</div>
+        {this.props.isLogin ? (
+          <div>
+            <div className="avatar">
+              <img src={this.props.imageLink} alt="" />
+            </div>
+            <div className="name">
+              {this.props.username ? "" + this.props.username : ""}
+            </div>
+          </div>
+        ) : null}
 
         <div className="nav">
           {this.props.isLogin ? (
@@ -87,6 +80,6 @@ export default compose(
       userId: loginState.userId,
       imageLink: loginState.imageLink
     }),
-    { getUserDataPending, signout }
+    { signout }
   )
 )(Routes);

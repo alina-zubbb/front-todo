@@ -1,20 +1,33 @@
-import { call, put, takeLatest } from "redux-saga/effects";
+import { call, put, takeLatest, all, select } from "redux-saga/effects";
 import { push } from "react-router-redux";
 
 import { axiosQuery } from "../../api.js";
 
-import { loginFulfilled, loginRejected } from "../../actions/loginActions";
+import {
+  loginFulfilled,
+  loginRejected,
+  changeLoginInputUsername,
+  changeLoginInputPassword
+} from "../../actions/loginActions";
 
 // worker
-function* worker(action) {
+function* worker() {
   try {
+    const {
+      loginInputValues: { username, password }
+    } = yield select();
     const { data } = yield call(axiosQuery, {
       method: "POST",
       url: "http://localhost:4000/login",
-      data: action.payload.data
+      data: { username, password }
     });
     localStorage.setItem("token", data.token);
-    yield [put(loginFulfilled(data)), put(push("/protected"))];
+    yield all([
+      put(loginFulfilled(data)),
+      put(changeLoginInputUsername("")),
+      put(changeLoginInputPassword("")),
+      put(push("/protected"))
+    ]);
   } catch (e) {
     yield put(loginRejected(e.message));
   }
@@ -22,7 +35,7 @@ function* worker(action) {
 
 // watcher
 function* login() {
-  yield takeLatest("LOGINPENDING", worker);
+  yield takeLatest("LOGIN_PENDING", worker);
 }
 
 export default login;

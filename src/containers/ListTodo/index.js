@@ -10,32 +10,12 @@ import {
   getAllTodoPending
 } from "../../actions/pageActions";
 
-import { store } from "../../store/configureStore";
-
 class ListTodo extends Component {
-  state = {
-    token: window.localStorage.getItem("token")
-  };
-
-  sortOld = () => {
-    this.props.sortFromOld();
-  };
-
-  sortNew = () => {
-    this.props.sortFromNew();
-  };
-
-  sortHour = () => {
-    this.props.sortFromHour();
-  };
-
   componentDidMount() {
-    // this.props.getAllTodo(this.state.token);
-    store.dispatch(getAllTodoPending(this.state.token));
+    this.props.getAllTodoPending();
   }
 
   render() {
-    console.log(this.props.list);
     return (
       <div>
         <div>
@@ -43,17 +23,17 @@ class ListTodo extends Component {
           <Button
             text="New"
             className="filtersBtn"
-            clickHandler={this.sortNew}
+            clickHandler={this.props.sortFromNew}
           />
           <Button
             text="Old"
             className="filtersBtn"
-            clickHandler={this.sortOld}
+            clickHandler={this.props.sortFromOld}
           />
           <Button
             text="Hour"
             className="filtersBtn"
-            clickHandler={this.sortHour}
+            clickHandler={this.props.sortFromHour}
           />
         </div>
         <ul className="todo-list">
@@ -71,13 +51,13 @@ class ListTodo extends Component {
 ListTodo.propTypes = {
   store: PropTypes.arrayOf(
     PropTypes.shape({
-      id: PropTypes.number,
-      text: PropTypes.string
+      id: PropTypes.number.isRequired,
+      text: PropTypes.string.isRequired
     })
   )
 };
 
 export default connect(
   ({ listState }) => ({ list: listState.list }),
-  { sortFromNew, sortFromOld, sortFromHour, getAllTodoPending }
+  { getAllTodoPending, sortFromNew, sortFromOld, sortFromHour }
 )(ListTodo);

@@ -1,3 +1,5 @@
+import * as _ from "../../actions/constants";
+
 const initialState = {
   pending: false,
   error: false,
@@ -6,122 +8,101 @@ const initialState = {
 
 export default function list(state = initialState, action) {
   switch (action.type) {
-    case "GETALLTODOPENDING":
-      return {
-        ...state,
-        ...{
-          pending: true
-        }
-      };
-    case "GETALLTODOFULFILLED":
-      return {
-        ...state,
-        ...{
-          pending: false,
-          list: action.payload.list
-        }
-      };
-    case "GETALLTODOREJECTED":
-      return {
-        ...state,
-        ...{
-          error: true
-        }
-      };
-    case "CREATETODOPENDING":
+    case _.GET_ALL_TODO_PENDING:
       return {
         ...state,
         pending: true
       };
-    case "CREATETODOFULFILLED":
+    case _.GET_ALL_TODO_FULFILLED:
       return {
         ...state,
         pending: false,
-        list: state.list.concat({
-          _id: action.payload._id,
-          text: action.payload.text,
-          userId: action.payload.userId,
-          done: action.payload.done
-        })
+        list: action.payload.list
       };
-    case "CREATETODOREJECTED":
+    case _.GET_ALL_TODO_REJECTED:
+      return {
+        ...state,
+        error: true
+      };
+    case _.CREATE_TODO_PENDING:
+      return {
+        ...state,
+        pending: true
+      };
+    case _.CREATE_TODO_FULFILLED:
+      return {
+        ...state,
+        pending: false,
+        list: state.list.concat(action.payload)
+      };
+    case _.CREATE_TODO_REJECTED:
       return {
         ...state,
         pending: false,
         error: true
       };
-    case "DELETETODOPENDING":
+    case _.DELETE_TODO_PENDING:
       return {
         ...state,
         pending: true
       };
-    case "DELETETODOFULFILLED":
+    case _.DELETE_TODO_FULFILLED:
       return {
         ...state,
         pending: false,
         list: state.list.filter(({ _id }) => _id !== action.payload.itemId)
       };
-    case "DELETETODOREJECTED":
+    case _.DELETE_TODO_REJECTED:
       return {
         ...state,
         pending: false,
         error: true
       };
-    case "UPDATETODOPENDING":
+    case _.UPDATE_TODO_PENDING:
       return {
         ...state,
         pending: true
       };
-    case "UPDATETODOFULFILLED":
+    case _.UPDATE_TODO_FULFILLED:
       return {
         ...state,
         pending: false,
         list: state.list.map(curr => {
-          console.log("curr", curr);
           return curr._id === action.payload.itemId
             ? { ...curr, text: action.payload.text }
             : curr;
         })
       };
-    case "UPDATETODOREJECTED":
+    case _.UPDATE_TODO_REJECTED:
       return {
         ...state,
         pending: false,
         error: true
       };
-    case "SORT_FROM_NEW":
+    case _.SORT_FROM_NEW:
       return {
         ...state,
-        ...{
-          list: [
-            ...state.list.sort((a, b) => {
-              return a.id > b.id ? -1 : a.id === b.id ? 0 : 1;
-            })
-          ]
-        }
+        list: state.list
+          .slice()
+          .sort(({ timeOfCreation: a1 }, { timeOfCreation: b1 }) => b1 - a1)
       };
-    case "SORT_FROM_OLD":
+    case _.SORT_FROM_OLD:
       return {
         ...state,
-        ...{
-          list: [
-            ...state.list.sort((a, b) => {
-              return a.id > b.id ? 1 : a.id === b.id ? 0 : -1;
-            })
-          ]
-        }
+        list: state.list
+          .slice()
+          .sort(({ timeOfCreation: a2 }, { timeOfCreation: b2 }) => a2 - b2)
       };
-    case "SORT_FROM_HOUR":
+    case _.SORT_FROM_HOUR:
       return {
         ...state,
         ...{
-          list: state.list.filter(({ id }) => {
+          list: state.list.filter(({ timeOfCreation: a3 }) => {
             const hourPoint = Date.now() - 5000;
-            return id > hourPoint;
+            return a3 > hourPoint;
           })
         }
       };
-
     default:
       return state;
   }

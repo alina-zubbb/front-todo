@@ -22,7 +22,7 @@ function* worker(action) {
 
 // watcher
 function* getFakePosts() {
-  yield takeLatest("GETFAKEPOSTSPENDING", worker);
+  yield takeLatest("GET_FAKE_POSTS_PENDING", worker);
 }
 
 export default getFakePosts;

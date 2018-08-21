@@ -1,36 +1,18 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-import { store } from "../../store/configureStore";
 import Input from "../../components/Input";
 import Button from "../../components/Button";
-import { loginPending } from "../../actions/loginActions";
+import {
+  loginPending,
+  changeLoginInputUsername,
+  changeLoginInputPassword
+} from "../../actions/loginActions";
 
 class Login extends Component {
-  state = {
-    inputName: "",
-    inputPassword: ""
-  };
-
-  inputNameChange = e => {
-    this.setState({
-      inputName: e.target.value
-    });
-  };
-
-  inputInputPassword = e => {
-    this.setState({
-      inputPassword: e.target.value
-    });
-  };
-
   handleSubmit = e => {
     e.preventDefault();
-    const data = {
-      username: this.state.inputName,
-      password: this.state.inputPassword
-    };
-    store.dispatch(loginPending(data));
+    this.props.loginPending();
   };
 
   render() {
@@ -40,16 +22,20 @@ class Login extends Component {
           <h1>LogIn</h1>
           <Input
             type="text"
-            value={this.state.inputName}
+            value={this.props.username}
             placeholder="name"
-            changeHandler={this.inputNameChange}
+            changeHandler={e =>
+              this.props.changeLoginInputUsername(e.target.value)
+            }
             isRequired="true"
           />
           <Input
             type="password"
-            value={this.state.inputPassword}
+            value={this.props.password}
             placeholder="password"
-            changeHandler={this.inputInputPassword}
+            changeHandler={e =>
+              this.props.changeLoginInputPassword(e.target.value)
+            }
             isRequired="true"
           />
           <Button className="add" text="login" type="submit" />
@@ -60,6 +46,10 @@ class Login extends Component {
 }
 
 export default connect(
-  null,
-  { loginPending }
+  ({ loginInputValues: { username, password } }) => ({ username, password }),
+  {
+    loginPending,
+    changeLoginInputUsername,
+    changeLoginInputPassword
+  }
 )(Login);

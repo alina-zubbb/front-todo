@@ -1,69 +1,64 @@
-// WITHOUT SAGA
-export const sortFromNew = () => dispatch => {
-  dispatch({ type: "SORT_FROM_NEW", payload: {} });
-};
-export const sortFromOld = () => ({ type: "SORT_FROM_OLD", payload: {} });
-export const sortFromHour = () => ({ type: "SORT_FROM_HOUR", payload: {} });
+import * as _ from "./constants";
 
-// SAGA
-// ---- GET ALL TODOS
-export const getAllTodoPending = token => ({
-  type: "GETALLTODOPENDING",
-  payload: { token }
+// --- WITHOUT SAGA
+export const sortFromNew = () => ({ type: _.SORT_FROM_NEW });
+export const sortFromOld = () => ({ type: _.SORT_FROM_OLD });
+export const sortFromHour = () => ({ type: _.SORT_FROM_HOUR });
+
+// ----SAGA
+// GET ALL TODOS
+export const getAllTodoPending = () => ({
+  type: _.GET_ALL_TODO_PENDING
 });
 export const getAllTodoFulfilled = list => ({
-  type: "GETALLTODOFULFILLED",
+  type: _.GET_ALL_TODO_FULFILLED,
   payload: { list }
 });
 export const getAllTodoRejected = error => {
-  return { type: "GETALLTODOREJECTED", payload: { error } };
+  return { type: _.GET_ALL_TODO_REJECTED, payload: { error } };
 };
 
-// ---- CHANGE TODO
-export const change = text => ({ type: "CHANGE", payload: { text } });
+// CHANGE TODO
+export const changeCreateTodoInput = text => ({
+  type: _.CHANGE_CREATE_TODO_INPUT,
+  payload: { text }
+});
 
-// ---- CREATE TODO
-export const createTodoPending = (token, text) => {
-  return { type: "CREATETODOPENDING", payload: { token, text } };
+// CREATE TODO
+export const createTodoPending = () => {
+  return { type: _.CREATE_TODO_PENDING };
 };
-export const createTodoFulfilled = ({ _id, text, userId, done }) => ({
-  type: "CREATETODOFULFILLED",
-  payload: {
-    _id,
-    text,
-    userId,
-    done
-  }
+export const createTodoFulfilled = payload => ({
+  type: _.CREATE_TODO_FULFILLED,
+  payload
 });
 export const createTodoRejected = () => ({
-  type: "CREATETODOREJECTED",
-  payload: {}
+  type: _.CREATE_TODO_REJECTED
 });
 
-// ---- DELETE TODO
-export const deleteTodoPending = (token, itemId) => ({
-  type: "DELETETODOPENDING",
-  payload: { token, itemId }
+// DELETE TODO
+export const deleteTodoPending = itemId => ({
+  type: _.DELETE_TODO_PENDING,
+  payload: { itemId }
 });
 export const deleteTodoFulfilled = ({ itemId }) => ({
-  type: "DELETETODOFULFILLED",
+  type: _.DELETE_TODO_FULFILLED,
   payload: { itemId }
 });
 export const deleteTodoRejected = () => ({
-  type: "DELETETODOREJECTED",
-  payload: {}
+  type: _.DELETE_TODO_REJECTED
 });
 
 // UPDATE TODO
-export const updateTodoPending = (token, itemId, text) => ({
-  type: "UPDATETODOPENDING",
-  payload: { token, itemId, text }
+export const updateTodoPending = (itemId, text, done) => ({
+  type: _.UPDATE_TODO_PENDING,
+  payload: { itemId, text, done }
 });
 export const updateTodoFulfilled = ({ _id: itemId, text }) => ({
-  type: "UPDATETODOFULFILLED",
+  type: _.UPDATE_TODO_FULFILLED,
   payload: { itemId, text }
 });
 export const updateTodoRejected = () => ({
-  type: "UPDATETODOREJECTED",
+  type: _.UPDATE_TODO_REJECTED,
   payload: {}
 });

@@ -13,7 +13,7 @@ function* worker(action) {
     const { data } = yield call(axiosQuery, {
       method: "POST",
       url: "http://localhost:4000/deleteTodo",
-      token: action.payload.token,
+      token: window.localStorage.token,
       data: { itemId: action.payload.itemId }
     });
     yield put(deleteTodoFulfilled(data));
@@ -24,7 +24,7 @@ function* worker(action) {
 
 // watcher
 function* deleteTodo() {
-  yield takeLatest("DELETETODOPENDING", worker);
+  yield takeLatest("DELETE_TODO_PENDING", worker);
 }
 
 export default deleteTodo;

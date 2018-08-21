@@ -3,34 +3,16 @@ import Input from "../../components/Input";
 import Button from "../../components/Button";
 import { connect } from "react-redux";
 
-import { store } from "../../store/configureStore";
-import { signUpPending } from "../../actions/loginActions";
+import {
+  signUpPending,
+  changeSignUpInputUsername,
+  changeSignUpInputPassword
+} from "../../actions/loginActions";
 
 class Signup extends Component {
-  state = {
-    inputName: "",
-    inputPassword: ""
-  };
-
-  inputNameChange = e => {
-    this.setState({
-      inputName: e.target.value
-    });
-  };
-
-  inputPasswordChange = e => {
-    this.setState({
-      inputPassword: e.target.value
-    });
-  };
-
-  handleSubmit = async e => {
+  handleSubmit = e => {
     e.preventDefault();
-    const data = {
-      username: this.state.inputName,
-      password: this.state.inputPassword
-    };
-    store.dispatch(signUpPending(data));
+    this.props.signUpPending();
   };
 
   render() {
@@ -39,16 +21,20 @@ class Signup extends Component {
         <h1>Sign Up</h1>
         <Input
           type="text"
-          value={this.state.inputName}
+          value={this.props.username}
           placeholder="name"
-          changeHandler={this.inputNameChange}
+          changeHandler={e =>
+            this.props.changeSignUpInputUsername(e.target.value)
+          }
           isRequired="true"
         />
         <Input
           type="password"
-          value={this.state.inputPassword}
+          value={this.props.password}
           placeholder="password"
-          changeHandler={this.inputPasswordChange}
+          changeHandler={e =>
+            this.props.changeSignUpInputPassword(e.target.value)
+          }
           isRequired="true"
         />
 
@@ -59,6 +45,10 @@ class Signup extends Component {
 }
 
 export default connect(
-  null,
-  { signUpPending }
+  ({ signUpInputValues: { username, password } }) => ({ username, password }),
+  {
+    signUpPending,
+    changeSignUpInputUsername,
+    changeSignUpInputPassword
+  }
 )(Signup);

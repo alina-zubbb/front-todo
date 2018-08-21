@@ -19,7 +19,7 @@ function* worker(action) {
     const response = yield call(axiosQuery, {
       method: "POST",
       url: "http://localhost:4000/uploadImage",
-      token: data.token,
+      token: window.localStorage.token,
       data: formData
     });
     yield put(uploadImageFulfilled(response.data));
@@ -30,7 +30,7 @@ function* worker(action) {
 
 // watcher
 function* signUp() {
-  yield takeLatest("UPLOADIMAGEPENDING", worker);
+  yield takeLatest("UPLOAD_IMAGE_PENDING", worker);
 }
 
 export default signUp;

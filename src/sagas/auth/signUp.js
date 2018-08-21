@@ -1,18 +1,32 @@
-import { call, put, takeLatest } from "redux-saga/effects";
+import { call, put, takeLatest, all, select } from "redux-saga/effects";
+import { push } from "react-router-redux";
 
 import { axiosQuery } from "../../api.js";
 
-import { signUpFulfilled, signUpRejected } from "../../actions/loginActions";
+import {
+  signUpFulfilled,
+  signUpRejected,
+  changeSignUpInputUsername,
+  changeSignUpInputPassword
+} from "../../actions/loginActions";
 
 // worker
-function* worker(action) {
+function* worker() {
   try {
+    const {
+      signUpInputValues: { username, password }
+    } = yield select();
     const { data } = yield call(axiosQuery, {
       method: "POST",
       url: "http://localhost:4000/signUp",
-      data: action.payload.data
+      data: { username, password }
     });
-    yield [put(signUpFulfilled(data))];
+    yield all([
+      put(signUpFulfilled(data)),
+      put(changeSignUpInputUsername("")),
+      put(changeSignUpInputPassword("")),
+      put(push("/login"))
+    ]);
   } catch (e) {
     yield put(signUpRejected(e.message));
   }
@@ -20,7 +34,7 @@ function* worker(action) {
 
 // watcher
 function* signUp() {
-  yield takeLatest("SIGNUPPENDING", worker);
+  yield takeLatest("SIGNUP_PENDING", worker);
 }
 
 export default signUp;

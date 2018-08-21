@@ -13,7 +13,7 @@ function* worker(action) {
     const { data: list } = yield call(axiosQuery, {
       method: "GET",
       url: "http://localhost:4000/getAllTodo",
-      token: action.payload.token
+      token: window.localStorage.token
     });
     yield put(getAllTodoFulfilled(list));
   } catch (e) {
@@ -23,7 +23,7 @@ function* worker(action) {
 
 // watcher
 function* getAllTodo() {
-  yield takeLatest("GETALLTODOPENDING", worker);
+  yield takeLatest("GET_ALL_TODO_PENDING", worker);
 }
 
 export default getAllTodo;

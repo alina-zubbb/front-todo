@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { store } from "../../store/configureStore";
 
 import Input from "../../components/Input";
 import Button from "../../components/Button";
@@ -20,26 +19,11 @@ class ItemTodo extends Component {
     };
   }
 
-  delete = () => {
-    if (process.env.NODE_ENV === "development") {
-      console.log("delete");
-    }
-    store.dispatch(
-      deleteTodoPending(window.localStorage.getItem("token"), this.props.itemId)
-    );
-  };
-
   update = e => {
     this.setState({
       edit: false
     });
-    store.dispatch(
-      updateTodoPending(
-        window.localStorage.getItem("token"),
-        this.props.itemId,
-        this.state.textInputValue
-      )
-    );
+    this.props.updateTodoPending(this.props.itemId, this.state.textInputValue);
   };
 
   editHandler = e => {
@@ -55,13 +39,12 @@ class ItemTodo extends Component {
   };
 
   doneChangeHandler = e => {
-    this.setState({
-      doneValue: !this.state.doneValue
-    });
+    this.setState(prevState => ({
+      doneValue: !prevState
+    }));
   };
 
   render() {
-    console.log("this.props.itemId", this.props.itemId);
     return (
       <div>
         <li className="item-todo">
@@ -89,7 +72,9 @@ class ItemTodo extends Component {
               <Button
                 className="delete"
                 text="delete"
-                clickHandler={this.delete}
+                clickHandler={() =>
+                  this.props.deleteTodoPending(this.props.itemId)
+                }
               />
             </span>
           )}
@@ -100,8 +85,8 @@ class ItemTodo extends Component {
 }
 
 ItemTodo.propTypes = {
-  itemId: PropTypes.string,
-  text: PropTypes.string
+  itemId: PropTypes.string.isRequired,
+  text: PropTypes.string.isRequired
 };
 
 export default connect(

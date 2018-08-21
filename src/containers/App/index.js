@@ -6,6 +6,11 @@ import { history, store } from "../../store/configureStore";
 import "../../index.css";
 
 import Routes from "../Routes";
+import { getUserDataPending } from "../../actions/loginActions";
+
+if (window.localStorage.token) {
+  store.dispatch(getUserDataPending());
+}
 
 class App extends Component {
   render() {

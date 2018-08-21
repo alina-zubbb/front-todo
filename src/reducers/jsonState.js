@@ -1,4 +1,7 @@
+import * as _ from "../actions/constants";
+
 const initialState = {
+  searchInputValue: "",
   pending: false,
   data: [],
   error: false
@@ -6,24 +9,29 @@ const initialState = {
 
 export default function jsonState(state = initialState, action) {
   switch (action.type) {
-    case "GETFAKEPOSTSPENDING": {
+    case _.CHANGE_POSTS_SEARCH_INPUT: {
       return {
-        pending: true,
-        data: [],
-        error: false
+        ...state,
+        searchInputValue: action.payload.text
       };
     }
-    case "GETFAKEPOSTSFULFILLED": {
+    case _.GET_FAKE_POSTS_PENDING: {
       return {
-        pending: false,
-        data: action.payload.jsonState,
-        error: false
+        ...state,
+        pending: true
       };
     }
-    case "GETFAKEPOSTSREJECTED":
+    case _.GET_FAKE_POSTS_FULFILLED: {
       return {
+        ...state,
         pending: false,
-        data: [],
+        data: action.payload.jsonState
+      };
+    }
+    case _.GET_FAKE_POSTS_REJECTED:
+      return {
+        ...state,
+        pending: false,
         error: true
       };
     default: {
