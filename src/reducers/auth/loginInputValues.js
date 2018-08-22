@@ -1,4 +1,4 @@
-import * as _ from "../../actions/constants";
+import * as types from "../../constants";
 
 const initialState = {
   username: "",
@@ -7,13 +7,13 @@ const initialState = {
 
 export default function input(state = initialState, action) {
   switch (action.type) {
-    case _.CHANGE_LOGIN_INPUT_USERNAME: {
+    case types.CHANGE_LOGIN_INPUT_USERNAME: {
       return {
         ...state,
         username: action.payload.text
       };
     }
-    case _.CHANGE_LOGIN_INPUT_PASSWORD: {
+    case types.CHANGE_LOGIN_INPUT_PASSWORD: {
       return {
         ...state,
         password: action.payload.text

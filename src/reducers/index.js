@@ -1,5 +1,6 @@
 import { combineReducers } from "redux";
 import { routerReducer } from "react-router-redux";
+import { reducer as formReducer } from "redux-form";
 
 import list from "./todos/list.js";
 import createTodoInput from "./todos/createTodoInput.js";
@@ -10,6 +11,7 @@ import signUpInputValues from "./auth/signUpInputValues.js";
 
 const rootReducer = combineReducers({
   routing: routerReducer,
+  form: formReducer,
 
   listState: list,
   createTodoInput: createTodoInput,

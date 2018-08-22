@@ -1,4 +1,4 @@
-import * as _ from "../../actions/constants";
+import * as types from "../../constants";
 
 const initialState = {
   pending: false,
@@ -11,7 +11,7 @@ const initialState = {
 
 export default function login(state = initialState, action) {
   switch (action.type) {
-    case _.LOGIN_PENDING:
+    case types.LOGIN_PENDING:
       return {
         ...state,
         pending: true,
@@ -19,7 +19,7 @@ export default function login(state = initialState, action) {
         username: null,
         authenticated: false
       };
-    case _.LOGIN_FULFILLED:
+    case types.LOGIN_FULFILLED:
       return {
         ...state,
         pending: false,
@@ -29,7 +29,7 @@ export default function login(state = initialState, action) {
         authenticated: true,
         imageLink: action.payload.imageLink
       };
-    case _.LOGIN_REJECTED:
+    case types.LOGIN_REJECTED:
       return {
         ...state,
         pending: false,
@@ -37,7 +37,7 @@ export default function login(state = initialState, action) {
         username: null,
         authenticated: false
       };
-    case _.SIGNUP_PENDING:
+    case types.SIGNUP_PENDING:
       return {
         ...state,
         pending: true,
@@ -45,7 +45,7 @@ export default function login(state = initialState, action) {
         username: null,
         authenticated: false
       };
-    case _.SIGNUP_FULFILLED:
+    case types.SIGNUP_FULFILLED:
       return {
         ...state,
         pending: false,
@@ -53,7 +53,7 @@ export default function login(state = initialState, action) {
         username: action.payload.username,
         authenticated: false
       };
-    case _.SIGNUP_REJECTED:
+    case types.SIGNUP_REJECTED:
       return {
         ...state,
         pending: false,
@@ -61,7 +61,7 @@ export default function login(state = initialState, action) {
         username: null,
         authenticated: false
       };
-    case _.GET_USER_DATA_PENDING:
+    case types.GET_USER_DATA_PENDING:
       return {
         ...state,
         pending: true,
@@ -69,7 +69,7 @@ export default function login(state = initialState, action) {
         username: null,
         authenticated: false
       };
-    case _.GET_USER_DATA_FULFILLED:
+    case types.GET_USER_DATA_FULFILLED:
       return {
         ...state,
         pending: false,
@@ -79,7 +79,7 @@ export default function login(state = initialState, action) {
         userId: action.payload.userId,
         imageLink: action.payload.imageLink
       };
-    case _.GET_USER_DATA_REJECTED:
+    case types.GET_USER_DATA_REJECTED:
       return {
         ...state,
         pending: false,
@@ -88,7 +88,7 @@ export default function login(state = initialState, action) {
         authenticated: false,
         userId: null
       };
-    case _.SIGNOUT:
+    case types.SIGNOUT:
       return {
         ...state,
         pending: false,
@@ -98,18 +98,18 @@ export default function login(state = initialState, action) {
         authenticated: false,
         imageLink: null
       };
-    case _.UPLOAD_IMAGE_PENDING:
+    case types.UPLOAD_IMAGE_PENDING:
       return {
         ...state,
         pending: true
       };
-    case _.UPLOAD_IMAGE_FULFILLED:
+    case types.UPLOAD_IMAGE_FULFILLED:
       return {
         ...state,
         pending: false,
         imageLink: action.payload.imageLink
       };
-    case _.UPLOAD_IMAGE_REJECTED:
+    case types.UPLOAD_IMAGE_REJECTED:
       return {
         ...state,
         pending: false,

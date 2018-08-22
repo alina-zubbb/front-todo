@@ -3,7 +3,7 @@ import {
   GET_FAKE_POSTS_PENDING,
   GET_FAKE_POSTS_FULFILLED,
   GET_FAKE_POSTS_REJECTED
-} from "./constants";
+} from "../constants";
 
 export const changePostsSearchInput = text => {
   return { type: CHANGE_POSTS_SEARCH_INPUT, payload: { text } };

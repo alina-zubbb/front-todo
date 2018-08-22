@@ -2,6 +2,7 @@ import { call, put, takeLatest } from "redux-saga/effects";
 
 import { axiosQuery } from "../../api.js";
 
+import { GET_FAKE_POSTS_PENDING } from "../../constants";
 import {
   getFakePostsFulfilled,
   getFakePostsRejected
@@ -22,7 +23,7 @@ function* worker(action) {
 
 // watcher
 function* getFakePosts() {
-  yield takeLatest("GET_FAKE_POSTS_PENDING", worker);
+  yield takeLatest(GET_FAKE_POSTS_PENDING, worker);
 }
 
 export default getFakePosts;

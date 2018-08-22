@@ -2,6 +2,7 @@ import { call, put, takeLatest, select } from "redux-saga/effects";
 
 import { axiosQuery } from "../../api.js";
 
+import { CREATE_TODO_PENDING } from "../../constants";
 import {
   changeCreateTodoInput,
   createTodoFulfilled,
@@ -28,7 +29,7 @@ function* worker() {
 
 // watcher
 function* createTodo() {
-  yield takeLatest("CREATE_TODO_PENDING", worker);
+  yield takeLatest(CREATE_TODO_PENDING, worker);
 }
 
 export default createTodo;

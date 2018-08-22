@@ -13,11 +13,6 @@ import Posts from "../Posts";
 import Profile from "../Profile";
 
 class Routes extends Component {
-  signoutHandler = () => {
-    localStorage.removeItem("token");
-    this.props.signout();
-  };
-
   render() {
     if (this.props.isPending) {
       return <div>loading...</div>;
@@ -44,8 +39,8 @@ class Routes extends Component {
               <Link to="/profile">Profile</Link>
               <Button
                 className="delete"
-                text="Logout"
-                clickHandler={this.signoutHandler}
+                text="SignOut"
+                clickHandler={this.props.signout}
               />
             </div>
           ) : (

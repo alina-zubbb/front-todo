@@ -3,6 +3,7 @@ import { push } from "react-router-redux";
 
 import { axiosQuery } from "../../api.js";
 
+import { LOGIN_PENDING } from "../../constants";
 import {
   loginFulfilled,
   loginRejected,
@@ -14,12 +15,14 @@ import {
 function* worker() {
   try {
     const {
-      loginInputValues: { username, password }
+      form: {
+        login: { values }
+      }
     } = yield select();
     const { data } = yield call(axiosQuery, {
       method: "POST",
       url: "http://localhost:4000/login",
-      data: { username, password }
+      data: values
     });
     localStorage.setItem("token", data.token);
     yield all([
@@ -35,7 +38,7 @@ function* worker() {
 
 // watcher
 function* login() {
-  yield takeLatest("LOGIN_PENDING", worker);
+  yield takeLatest(LOGIN_PENDING, worker);
 }
 
 export default login;

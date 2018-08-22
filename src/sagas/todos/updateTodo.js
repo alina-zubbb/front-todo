@@ -2,6 +2,7 @@ import { call, put, takeLatest } from "redux-saga/effects";
 
 import { axiosQuery } from "../../api.js";
 
+import { UPDATE_TODO_PENDING } from "../../constants";
 import {
   updateTodoFulfilled,
   updateTodoRejected
@@ -24,7 +25,7 @@ function* worker(action) {
 
 // watcher
 function* updateTodo() {
-  yield takeLatest("UPDATE_TODO_PENDING", worker);
+  yield takeLatest(UPDATE_TODO_PENDING, worker);
 }
 
 export default updateTodo;

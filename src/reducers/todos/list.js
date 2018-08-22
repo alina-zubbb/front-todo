@@ -1,4 +1,4 @@
-import * as _ from "../../actions/constants";
+import * as types from "../../constants";
 
 const initialState = {
   pending: false,
@@ -8,62 +8,62 @@ const initialState = {
 
 export default function list(state = initialState, action) {
   switch (action.type) {
-    case _.GET_ALL_TODO_PENDING:
+    case types.GET_ALL_TODO_PENDING:
       return {
         ...state,
         pending: true
       };
-    case _.GET_ALL_TODO_FULFILLED:
+    case types.GET_ALL_TODO_FULFILLED:
       return {
         ...state,
         pending: false,
         list: action.payload.list
       };
-    case _.GET_ALL_TODO_REJECTED:
+    case types.GET_ALL_TODO_REJECTED:
       return {
         ...state,
         error: true
       };
-    case _.CREATE_TODO_PENDING:
+    case types.CREATE_TODO_PENDING:
       return {
         ...state,
         pending: true
       };
-    case _.CREATE_TODO_FULFILLED:
+    case types.CREATE_TODO_FULFILLED:
       return {
         ...state,
         pending: false,
         list: state.list.concat(action.payload)
       };
-    case _.CREATE_TODO_REJECTED:
+    case types.CREATE_TODO_REJECTED:
       return {
         ...state,
         pending: false,
         error: true
       };
-    case _.DELETE_TODO_PENDING:
+    case types.DELETE_TODO_PENDING:
       return {
         ...state,
         pending: true
       };
-    case _.DELETE_TODO_FULFILLED:
+    case types.DELETE_TODO_FULFILLED:
       return {
         ...state,
         pending: false,
         list: state.list.filter(({ _id }) => _id !== action.payload.itemId)
       };
-    case _.DELETE_TODO_REJECTED:
+    case types.DELETE_TODO_REJECTED:
       return {
         ...state,
         pending: false,
         error: true
       };
-    case _.UPDATE_TODO_PENDING:
+    case types.UPDATE_TODO_PENDING:
       return {
         ...state,
         pending: true
       };
-    case _.UPDATE_TODO_FULFILLED:
+    case types.UPDATE_TODO_FULFILLED:
       return {
         ...state,
         pending: false,
@@ -73,27 +73,27 @@ export default function list(state = initialState, action) {
             : curr;
         })
       };
-    case _.UPDATE_TODO_REJECTED:
+    case types.UPDATE_TODO_REJECTED:
       return {
         ...state,
         pending: false,
         error: true
       };
-    case _.SORT_FROM_NEW:
+    case types.SORT_FROM_NEW:
       return {
         ...state,
         list: state.list
           .slice()
           .sort(({ timeOfCreation: a1 }, { timeOfCreation: b1 }) => b1 - a1)
       };
-    case _.SORT_FROM_OLD:
+    case types.SORT_FROM_OLD:
       return {
         ...state,
         list: state.list
           .slice()
           .sort(({ timeOfCreation: a2 }, { timeOfCreation: b2 }) => a2 - b2)
       };
-    case _.SORT_FROM_HOUR:
+    case types.SORT_FROM_HOUR:
       return {
         ...state,
         ...{

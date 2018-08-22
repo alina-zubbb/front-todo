@@ -2,6 +2,7 @@ import { call, put, takeLatest, select } from "redux-saga/effects";
 
 import { axiosQuery } from "../../api.js";
 
+import { GET_USER_DATA_PENDING } from "../../constants";
 import {
   getUserDataFulfilled,
   getUserDataRejected
@@ -26,7 +27,7 @@ function* worker(action) {
 
 // watcher
 function* getUserData() {
-  yield takeLatest("GET_USER_DATA_PENDING", worker);
+  yield takeLatest(GET_USER_DATA_PENDING, worker);
 }
 
 export default getUserData;

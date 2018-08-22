@@ -2,6 +2,7 @@ import { call, put, takeLatest } from "redux-saga/effects";
 
 import { axiosQuery } from "../../api.js";
 
+import { UPLOAD_IMAGE_PENDING } from "../../constants";
 import {
   uploadImageFulfilled,
   uploadImageRejected
@@ -30,7 +31,7 @@ function* worker(action) {
 
 // watcher
 function* signUp() {
-  yield takeLatest("UPLOAD_IMAGE_PENDING", worker);
+  yield takeLatest(UPLOAD_IMAGE_PENDING, worker);
 }
 
 export default signUp;

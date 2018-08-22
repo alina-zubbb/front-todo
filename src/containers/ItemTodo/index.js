@@ -19,14 +19,14 @@ class ItemTodo extends Component {
     };
   }
 
-  update = e => {
+  update = () => {
     this.setState({
       edit: false
     });
     this.props.updateTodoPending(this.props.itemId, this.state.textInputValue);
   };
 
-  editHandler = e => {
+  editHandler = () => {
     this.setState({
       edit: true
     });
@@ -38,7 +38,7 @@ class ItemTodo extends Component {
     });
   };
 
-  doneChangeHandler = e => {
+  doneChangeHandler = () => {
     this.setState(prevState => ({
       doneValue: !prevState
     }));

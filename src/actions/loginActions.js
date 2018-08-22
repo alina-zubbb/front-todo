@@ -1,60 +1,59 @@
-import * as _ from "./constants";
+import * as types from "../constants";
 
 // WITHOUT SAGA
 // signout //
-export const signout = () => {
-  localStorage.removeItem("token");
-  return { type: _.SIGNOUT };
-};
+export const signout = () => ({
+  type: types.SIGNOUT
+});
 // login
 export const changeLoginInputUsername = text => {
-  return { type: _.CHANGE_LOGIN_INPUT_USERNAME, payload: { text } };
+  return { type: types.CHANGE_LOGIN_INPUT_USERNAME, payload: { text } };
 };
 
 export const changeLoginInputPassword = text => {
-  return { type: _.CHANGE_LOGIN_INPUT_PASSWORD, payload: { text } };
+  return { type: types.CHANGE_LOGIN_INPUT_PASSWORD, payload: { text } };
 };
 // signup
 export const changeSignUpInputUsername = text => {
-  return { type: _.CHANGE_SIGNUP_INPUT_USERNAME, payload: { text } };
+  return { type: types.CHANGE_SIGNUP_INPUT_USERNAME, payload: { text } };
 };
 
 export const changeSignUpInputPassword = text => {
-  return { type: _.CHANGE_SIGNUP_INPUT_PASSWORD, payload: { text } };
+  return { type: types.CHANGE_SIGNUP_INPUT_PASSWORD, payload: { text } };
 };
 
 // SAGA
 // signUp //
 export const signUpPending = () => {
-  return { type: _.SIGNUP_PENDING };
+  return { type: types.SIGNUP_PENDING };
 };
 export const signUpFulfilled = ({ username, authenticated }) => {
   return {
-    type: _.SIGNUP_FULFILLED,
+    type: types.SIGNUP_FULFILLED,
     payload: { username, authStatus: authenticated }
   };
 };
 export const signUpRejected = error => {
-  return { type: _.SIGNUP_REJECTED, payload: { error } };
+  return { type: types.SIGNUP_REJECTED, payload: { error } };
 };
 
 // upload image //
 export const uploadImagePending = data => {
-  return { type: _.UPLOAD_IMAGE_PENDING, payload: { data } };
+  return { type: types.UPLOAD_IMAGE_PENDING, payload: { data } };
 };
 export const uploadImageFulfilled = ({ imageLink }) => {
   return {
-    type: _.UPLOAD_IMAGE_FULFILLED,
+    type: types.UPLOAD_IMAGE_FULFILLED,
     payload: { imageLink }
   };
 };
 export const uploadImageRejected = error => {
-  return { type: _.UPLOAD_IMAGE_REJECTED, payload: { error } };
+  return { type: types.UPLOAD_IMAGE_REJECTED, payload: { error } };
 };
 
 // getUserData //
 export const getUserDataPending = () => {
-  return { type: _.GET_USER_DATA_PENDING, payload: {} };
+  return { type: types.GET_USER_DATA_PENDING, payload: {} };
 };
 export const getUserDataFulfilled = ({
   username,
@@ -63,24 +62,24 @@ export const getUserDataFulfilled = ({
   imageLink
 }) => {
   return {
-    type: _.GET_USER_DATA_FULFILLED,
+    type: types.GET_USER_DATA_FULFILLED,
     payload: { username, authenticated, userId, imageLink }
   };
 };
 export const getUserDataRejected = error => {
-  return { type: _.GET_USER_DATA_REJECTED, payload: { error } };
+  return { type: types.GET_USER_DATA_REJECTED, payload: { error } };
 };
 
 // login //
 export const loginPending = () => {
-  return { type: _.LOGIN_PENDING };
+  return { type: types.LOGIN_PENDING };
 };
 export const loginFulfilled = ({ username, authenticated, imageLink }) => {
   return {
-    type: _.LOGIN_FULFILLED,
+    type: types.LOGIN_FULFILLED,
     payload: { username, authStatus: authenticated, imageLink }
   };
 };
 export const loginRejected = error => {
-  return { type: _.LOGIN_REJECTED, payload: { error } };
+  return { type: types.LOGIN_REJECTED, payload: { error } };
 };

@@ -1,4 +1,4 @@
-import * as _ from "../actions/constants";
+import * as types from "../constants";
 
 const initialState = {
   searchInputValue: "",
@@ -9,26 +9,26 @@ const initialState = {
 
 export default function jsonState(state = initialState, action) {
   switch (action.type) {
-    case _.CHANGE_POSTS_SEARCH_INPUT: {
+    case types.CHANGE_POSTS_SEARCH_INPUT: {
       return {
         ...state,
         searchInputValue: action.payload.text
       };
     }
-    case _.GET_FAKE_POSTS_PENDING: {
+    case types.GET_FAKE_POSTS_PENDING: {
       return {
         ...state,
         pending: true
       };
     }
-    case _.GET_FAKE_POSTS_FULFILLED: {
+    case types.GET_FAKE_POSTS_FULFILLED: {
       return {
         ...state,
         pending: false,
         data: action.payload.jsonState
       };
     }
-    case _.GET_FAKE_POSTS_REJECTED:
+    case types.GET_FAKE_POSTS_REJECTED:
       return {
         ...state,
         pending: false,
