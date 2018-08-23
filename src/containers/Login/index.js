@@ -6,11 +6,16 @@ import { loginPending } from "../../actions/loginActions";
 
 class Login extends Component {
   render() {
-    return <LoginForm onSubmit={this.props.loginPending} />;
+    return (
+      <div>
+        {this.props.errorMessage ? this.props.errorMessage : ""}
+        <LoginForm onSubmit={this.props.loginPending} />
+      </div>
+    );
   }
 }
 
 export default connect(
-  null,
+  ({ loginState }) => ({ errorMessage: loginState.error }),
   { loginPending }
 )(Login);

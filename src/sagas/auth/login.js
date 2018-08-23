@@ -19,20 +19,25 @@ function* worker() {
         login: { values }
       }
     } = yield select();
-    const { data } = yield call(axiosQuery, {
+    const { data, status } = yield call(axiosQuery, {
       method: "POST",
       url: "http://localhost:4000/login",
       data: values
     });
-    localStorage.setItem("token", data.token);
-    yield all([
-      put(loginFulfilled(data)),
-      put(changeLoginInputUsername("")),
-      put(changeLoginInputPassword("")),
-      put(push("/protected"))
-    ]);
+    if (status === 200) {
+      localStorage.setItem("token", data.token);
+      yield all([
+        put(loginFulfilled(data)),
+        put(changeLoginInputUsername("")),
+        put(changeLoginInputPassword("")),
+        put(push("/protected"))
+      ]);
+    }
+    if (status === 201 || status === 202) {
+      yield put(loginRejected(data.message));
+    }
   } catch (e) {
-    yield put(loginRejected(e.message));
+    console.log(e);
   }
 }
 

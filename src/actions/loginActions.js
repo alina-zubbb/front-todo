@@ -80,6 +80,6 @@ export const loginFulfilled = ({ username, authenticated, imageLink }) => {
     payload: { username, authStatus: authenticated, imageLink }
   };
 };
-export const loginRejected = error => {
-  return { type: types.LOGIN_REJECTED, payload: { error } };
+export const loginRejected = message => {
+  return { type: types.LOGIN_REJECTED, payload: { message } };
 };

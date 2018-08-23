@@ -33,7 +33,7 @@ export default function login(state = initialState, action) {
       return {
         ...state,
         pending: false,
-        error: true,
+        error: action.payload.message,
         username: null,
         authenticated: false
       };
